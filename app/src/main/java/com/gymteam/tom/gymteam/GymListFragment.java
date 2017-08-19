@@ -1,7 +1,7 @@
 package com.gymteam.tom.gymteam;
 
 
-import android.app.ListFragment;
+import android.support.v4.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -47,12 +47,14 @@ public class GymListFragment extends ListFragment {
         super.onAttach(context);
 
         try{
-            mCallback = (OnGymSelectedListener) getActivity();
+            mCallback = (OnGymSelectedListener) getParentFragment();
         } catch (ClassCastException e){
             throw new ClassCastException(getActivity().toString() +
                     "must implement OnGymSelectedListener");
         }
     }
+
+
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {

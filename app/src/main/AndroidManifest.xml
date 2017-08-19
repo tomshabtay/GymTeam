@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ListActivity"
+            android:name=".ListFragment"
             android:label="@string/title_activity_gym_picker_list"></activity>
     </application>
 

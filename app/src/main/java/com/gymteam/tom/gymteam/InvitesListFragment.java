@@ -1,17 +1,13 @@
 package com.gymteam.tom.gymteam;
 
 
-import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v4.app.ListFragment;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.gymteam.tom.gymteam.R;
 import com.gymteam.tom.gymteam.model.Gym;
 import com.gymteam.tom.gymteam.model.Model;
 import com.gymteam.tom.gymteam.model.WorkoutInvite;
@@ -55,7 +51,7 @@ public class InvitesListFragment extends ListFragment {
         super.onAttach(context);
 
         try{
-            mCallback = (OnWorkoutInviteSelectedListener) getActivity();
+            mCallback = (OnWorkoutInviteSelectedListener) getParentFragment();
         } catch (ClassCastException e){
             throw new ClassCastException(getActivity().toString() +
                     "must implement WorkoutInviteSelectedListener");
