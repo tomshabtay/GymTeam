@@ -1,12 +1,15 @@
 package com.gymteam.tom.gymteam;
 
 
-import android.support.v4.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gymteam.tom.gymteam.model.Gym;
 import com.gymteam.tom.gymteam.model.Model;
@@ -18,7 +21,7 @@ public class GymListFragment extends ListFragment {
 
 
     OnGymSelectedListener mCallback;
-    ArrayList<String> list;
+    ArrayList<Gym> list;
 
     public GymListFragment() {
         // Required empty public constructor
@@ -30,13 +33,12 @@ public class GymListFragment extends ListFragment {
 
         list = new ArrayList<>();
 
-        for(Gym gym : Model.getInstance().gymsList.values()){
-            list.add(gym.getName() + "\nusers: " + String.valueOf(gym.usersInGym.size())+ "\naddress: " + gym.getAddress());
+        for (Gym gym : Model.getInstance().gymsList.values()) {
+            list.add(gym);
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
+        GymListAdapter arrayAdapter = new GymListAdapter(
+                getContext(),
                 list);
 
         setListAdapter(arrayAdapter);
@@ -46,22 +48,20 @@ public class GymListFragment extends ListFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        try{
+        try {
             mCallback = (OnGymSelectedListener) getParentFragment();
-        } catch (ClassCastException e){
+        } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() +
                     "must implement OnGymSelectedListener");
         }
     }
 
 
-
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        String str = this.list.get(position);
-        int place = str.indexOf("\n");
+        String name = this.list.get(position).getName();
         //Getting the name of the gym
-        mCallback.onGymSelected(str.substring(0,place));
+        mCallback.onGymSelected(name);
 
     }
 
@@ -69,4 +69,27 @@ public class GymListFragment extends ListFragment {
         public void onGymSelected(String name);
     }
 
+    public class GymListAdapter extends ArrayAdapter<Gym> {
+
+        public GymListAdapter(Context context, ArrayList<Gym> values) {
+            super(context, R.layout.gym_row_layout, values);
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            final View theView = inflater.inflate(R.layout.gym_row_layout, parent, false);
+            Gym gym = getItem(position);
+            TextView textView = (TextView) theView.findViewById(R.id.invite_name);
+            textView.setText(gym.getName());
+
+            TextView textView2 = (TextView) theView.findViewById(R.id.gym_address);
+            textView2.setText(gym.getAddress());
+
+
+            return theView;
+        }
+
+    }
 }

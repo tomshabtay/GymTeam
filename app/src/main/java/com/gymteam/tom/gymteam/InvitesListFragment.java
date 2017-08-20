@@ -4,9 +4,12 @@ package com.gymteam.tom.gymteam;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gymteam.tom.gymteam.model.Gym;
 import com.gymteam.tom.gymteam.model.Model;
@@ -16,10 +19,10 @@ import java.util.ArrayList;
 
 
 public class InvitesListFragment extends ListFragment {
-    final static String ARG_GYM_NAME = "gym_name";
+    public final static String ARG_GYM_NAME = "gym_name";
 
     OnWorkoutInviteSelectedListener mCallback;
-    ArrayList<String> list;
+    ArrayList<WorkoutInvite> list;
     Gym selectedGym;
 
     public InvitesListFragment() {
@@ -35,15 +38,21 @@ public class InvitesListFragment extends ListFragment {
         selectedGym = Model.getInstance().gymsList.get(gymName);
 
         for(WorkoutInvite invite : selectedGym.workoutInvitesInGym){
-            list.add(invite.name + "\n" + invite.description);
+            list.add(invite);
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
+        InviteListAdapter arrayAdapter = new InviteListAdapter(
+                getContext(),
                 list);
 
         setListAdapter(arrayAdapter);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_invites_list, container, false);
+        return view;
     }
 
     @Override
@@ -60,12 +69,43 @@ public class InvitesListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
+        mCallback.onWorkoutInviteSelected(selectedGym.getName(), position);
 
 
     }
 
+
     public interface OnWorkoutInviteSelectedListener {
-        public void onWorkoutInviteSelected(String name);
+        public void onWorkoutInviteSelected(String gymName, int position);
+    }
+
+    public class InviteListAdapter extends ArrayAdapter<WorkoutInvite> {
+
+        public InviteListAdapter(Context context, ArrayList<WorkoutInvite> values) {
+            super(context, R.layout.invites_row_layout, values);
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            final View theView = inflater.inflate(R.layout.invites_row_layout, parent, false);
+            WorkoutInvite invite = getItem(position);
+            TextView textView = (TextView) theView.findViewById(R.id.invite_name);
+            textView.setText(invite.getName());
+
+            TextView textView2 = (TextView) theView.findViewById(R.id.gym_name);
+            textView2.setText(invite.getGym().getName());
+
+            TextView textView3 = (TextView) theView.findViewById(R.id.creator_name);
+            textView3.setText(invite.getCreator().getName());
+
+            TextView textView4 = (TextView) theView.findViewById(R.id.description_invite);
+            textView4.setText(invite.getDescription());
+
+            return theView;
+        }
+
     }
 
 

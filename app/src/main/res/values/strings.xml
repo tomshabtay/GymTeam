@@ -7,4 +7,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_favorite">Favorite</string>
+    <string name="users_title">Users:</string>
+    <string name="address_title">Address:</string>
+    <string name="creator_title">Creator:</string>
+    <string name="at_title">At:</string>
+    <string name="description_title">Description:</string>
 </resources>

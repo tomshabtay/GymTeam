@@ -5,10 +5,20 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.gymteam.tom.gymteam.model.Model;
 
 public class MainActivity extends AppCompatActivity  {
+
+    public static final String TAB_BROWSE = "Browse";
+    public static final String TAB_MY_INVITES = "My Invites";
+
+    TabLayout tabLayout;
+    MyTabsPagerAdapter myTabsPagerAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,19 +26,23 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+
+
+
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText(TAB_BROWSE));
+        tabLayout.addTab(tabLayout.newTab().setText(TAB_MY_INVITES));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final MyTabsPagerAdapter adapter = new MyTabsPagerAdapter
+         myTabsPagerAdapter = new MyTabsPagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
+        viewPager.setAdapter(myTabsPagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
@@ -45,14 +59,61 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+
+
+
+
+
         //Adding sample data to the Model
         addSampleDataToModel();
 
 
+
+
+
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
+        int position = tabLayout.getSelectedTabPosition();
+        String tab_name = tabLayout.getTabAt(position).getText().toString();
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                if(tab_name == TAB_BROWSE) {
+                    myTabsPagerAdapter.tabBrowse.back();
+                }
+                else if(tab_name == TAB_MY_INVITES){
+
+                }
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        int position = tabLayout.getSelectedTabPosition();
+        String tab_name = tabLayout.getTabAt(position).getText().toString();
+
+        if(tab_name == TAB_BROWSE) {
+            myTabsPagerAdapter.tabBrowse.back();
+        }
+
+
+    }
 
     public void addSampleDataToModel(){
         Model m = Model.getInstance();
