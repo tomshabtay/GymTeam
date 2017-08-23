@@ -10,7 +10,7 @@ public class Model {
 
     public HashMap<String,Gym> gymsList;
     public HashMap<String,User> usersList;
-    User activeUser;
+    public User activeUser;
     Gym activeGym;
 
     public void addUserToGym(String gymName, String name, String id){
@@ -25,6 +25,21 @@ public class Model {
         }
 
 
+    }
+
+    public void setActiveUser(User user){
+        activeUser = user;
+
+    }
+
+    public void addInvite(WorkoutInvite invite){
+        Gym gym = gymsList.get(invite.gym.getName());
+        gym.workoutInvitesInGym.add(invite);
+
+        User user = usersList.get(invite.creator.getId());
+        user.invites.add(invite);
+
+        Log.d("INV", activeUser.invites.get(0).getName());
     }
 
     public void addWorkoutInviteToGym(String name, String description, String userId, String gymName){

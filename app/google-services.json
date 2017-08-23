@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "715236948629",
+    "firebase_url": "https://gymteam-50f1f.firebaseio.com",
+    "project_id": "gymteam-50f1f",
+    "storage_bucket": "gymteam-50f1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715236948629:android:24db3cb4104e54b6",
+        "android_client_info": {
+          "package_name": "com.gymteam.tom.gymteam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715236948629-ei1lt60epgjkb790t9mdcfmobjq03dhk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gymteam.tom.gymteam",
+            "certificate_hash": "e2c7454ccb4943b8a8da9cc7d1f0c4cfc5d3802f"
+          }
+        },
+        {
+          "client_id": "715236948629-93ttu2cdhv8aqc7h4n6t1hru475u82b5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnRPged8HWdhHsMFjZOUdQyrMkHDI5JbQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715236948629-93ttu2cdhv8aqc7h4n6t1hru475u82b5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.gymteam.tom.gymteam.model.Model;
+
 
 public class MyInvitesFragment extends Fragment
         implements InvitesListFragment.OnWorkoutInviteSelectedListener {
@@ -22,8 +24,7 @@ public class MyInvitesFragment extends Fragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TabFragment3 tabFragment2 = new TabFragment3();
-        getChildFragmentManager().beginTransaction().add(R.id.fragment_container, tabFragment2).commit();
+        setList();
     }
 
 
@@ -40,9 +41,27 @@ public class MyInvitesFragment extends Fragment
 
     }
 
+    public void setList(){
+        InvitesListFragment invitesListFragment = new InvitesListFragment();
+        Bundle args = new Bundle();
+        invitesListFragment.setArguments(args);
+        args.putString(InvitesListFragment.ARG_USER_ID, Model.getInstance().activeUser.getId());
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, invitesListFragment)
+                .addToBackStack(null)
+                .commit();
+
+    }
+
 
     @Override
     public void onWorkoutInviteSelected(String gymName, int position) {
 
+    }
+
+    @Override
+    public void addInviteToGym(String name) {
+        //Nothing here
     }
 }

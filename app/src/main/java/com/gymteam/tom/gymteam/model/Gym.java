@@ -36,4 +36,6 @@ public class Gym {
     public void setAddress(String address) {
         this.address = address;
     }
+
+
 }

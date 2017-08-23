@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 
 public class BrowseFragment extends Fragment
         implements GymListFragment.OnGymSelectedListener,
-        InvitesListFragment.OnWorkoutInviteSelectedListener {
+        InvitesListFragment.OnWorkoutInviteSelectedListener,
+        AddInviteFragment.OnButtonClick{
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +55,8 @@ public class BrowseFragment extends Fragment
             onGymSelected(fragment.selectedInvite.getGym().getName());
 
         } else {
-
+            GymListFragment gymListFragment = new GymListFragment();
+            getChildFragmentManager().beginTransaction().replace(R.id.fragment_container, gymListFragment).commit();
         }
 
 
@@ -73,5 +75,25 @@ public class BrowseFragment extends Fragment
                 .replace(R.id.fragment_container, inviteDetailsFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void addInviteToGym(String name) {
+        AddInviteFragment addInviteFragment = new AddInviteFragment();
+        Bundle args = new Bundle();
+        args.putString(AddInviteFragment.ARG_GYM_NAME, name);
+        addInviteFragment.setArguments(args);
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,addInviteFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onButtonClick() {
+        GymListFragment gymListFragment = new GymListFragment();
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_container, gymListFragment).commit();
+
     }
 }

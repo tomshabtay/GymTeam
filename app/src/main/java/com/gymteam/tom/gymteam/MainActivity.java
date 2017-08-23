@@ -5,11 +5,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.gymteam.tom.gymteam.model.Model;
+import com.gymteam.tom.gymteam.model.User;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -28,7 +30,8 @@ public class MainActivity extends AppCompatActivity  {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
+        //Adding sample data to the Model
+        addSampleDataToModel();
 
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -64,8 +67,7 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
-        //Adding sample data to the Model
-        addSampleDataToModel();
+
 
 
 
@@ -135,6 +137,10 @@ public class MainActivity extends AppCompatActivity  {
                     Ipusm.gymNames[j % Ipusm.gymNames.length]);
 
         }
+
+        User user = m.usersList.get(Ipusm.userIds[0]);
+        m.setActiveUser(user);
+        Log.d("ACTIVE USER", m.activeUser.getName());
 
     }
 }

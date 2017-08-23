@@ -3,6 +3,7 @@ package com.gymteam.tom.gymteam;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.gymteam.tom.gymteam.model.Gym;
 import com.gymteam.tom.gymteam.model.Model;
+import com.gymteam.tom.gymteam.model.User;
 import com.gymteam.tom.gymteam.model.WorkoutInvite;
 
 import java.util.ArrayList;
@@ -20,10 +22,13 @@ import java.util.ArrayList;
 
 public class InvitesListFragment extends ListFragment {
     public final static String ARG_GYM_NAME = "gym_name";
+    public final static String ARG_USER_ID = "user_id";
 
     OnWorkoutInviteSelectedListener mCallback;
     ArrayList<WorkoutInvite> list;
     Gym selectedGym;
+    User selectedUser;
+    InviteListAdapter arrayAdapter;
 
     public InvitesListFragment() {
         // Required empty public constructor
@@ -34,16 +39,24 @@ public class InvitesListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         String gymName = getArguments().getString(ARG_GYM_NAME);
+        String userId = getArguments().getString(ARG_USER_ID);
+
         list = new ArrayList<>();
-        selectedGym = Model.getInstance().gymsList.get(gymName);
 
-        for(WorkoutInvite invite : selectedGym.workoutInvitesInGym){
-            list.add(invite);
+        if (gymName != null) {
+            selectedGym = Model.getInstance().gymsList.get(gymName);
+            arrayAdapter = new InviteListAdapter(
+                    getContext(),
+                    selectedGym.workoutInvitesInGym);
+
+
+        } else if(userId != null){
+            selectedUser = Model.getInstance().usersList.get(userId);
+            arrayAdapter = new InviteListAdapter(
+                    getContext(),
+                    selectedUser.invites);
+
         }
-
-        InviteListAdapter arrayAdapter = new InviteListAdapter(
-                getContext(),
-                list);
 
         setListAdapter(arrayAdapter);
     }
@@ -52,6 +65,14 @@ public class InvitesListFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_invites_list, container, false);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.btn_add_invite);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.addInviteToGym(selectedGym.getName());
+            }
+        });
         return view;
     }
 
@@ -59,9 +80,9 @@ public class InvitesListFragment extends ListFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        try{
+        try {
             mCallback = (OnWorkoutInviteSelectedListener) getParentFragment();
-        } catch (ClassCastException e){
+        } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() +
                     "must implement WorkoutInviteSelectedListener");
         }
@@ -76,8 +97,12 @@ public class InvitesListFragment extends ListFragment {
 
 
     public interface OnWorkoutInviteSelectedListener {
+
         public void onWorkoutInviteSelected(String gymName, int position);
+
+        public void addInviteToGym(String name);
     }
+
 
     public class InviteListAdapter extends ArrayAdapter<WorkoutInvite> {
 

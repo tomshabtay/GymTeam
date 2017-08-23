@@ -14,4 +14,7 @@
     <string name="creator_title">Creator:</string>
     <string name="at_title">At:</string>
     <string name="description_title">Description:</string>
+    <string name="invite_name">Invite Name:</string>
+    <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
 </resources>
