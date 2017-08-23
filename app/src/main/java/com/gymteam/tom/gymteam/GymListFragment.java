@@ -4,7 +4,12 @@ package com.gymteam.tom.gymteam;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -31,6 +36,7 @@ public class GymListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         list = new ArrayList<>();
 
         for (Gym gym : Model.getInstance().gymsList.values()) {
@@ -45,6 +51,12 @@ public class GymListFragment extends ListFragment {
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
@@ -54,6 +66,7 @@ public class GymListFragment extends ListFragment {
             throw new ClassCastException(getActivity().toString() +
                     "must implement OnGymSelectedListener");
         }
+        getActivity().supportInvalidateOptionsMenu();
     }
 
 
@@ -64,6 +77,19 @@ public class GymListFragment extends ListFragment {
         mCallback.onGymSelected(name);
 
     }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.add_menu);
+        menuItem.setVisible(false);
+
+        Log.d("MENU", menuItem.getTitle().toString());
+
+
+    }
+
+
 
     public interface OnGymSelectedListener {
         public void onGymSelected(String name);

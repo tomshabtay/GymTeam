@@ -11,7 +11,8 @@ import android.view.ViewGroup;
 public class BrowseFragment extends Fragment
         implements GymListFragment.OnGymSelectedListener,
         InvitesListFragment.OnWorkoutInviteSelectedListener,
-        AddInviteFragment.OnButtonClick{
+        AddInviteFragment.OnButtonClick,
+        InviteDetailsFragment.InviteDetailsActions{
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +95,14 @@ public class BrowseFragment extends Fragment
     public void onButtonClick() {
         GymListFragment gymListFragment = new GymListFragment();
         getChildFragmentManager().beginTransaction().replace(R.id.fragment_container, gymListFragment).commit();
+
+    }
+
+    @Override
+    public void goBackToList() {
+        Fragment currentFragment = getChildFragmentManager().findFragmentById(R.id.fragment_container);
+        InviteDetailsFragment fragment = (InviteDetailsFragment) currentFragment;
+        onGymSelected(fragment.selectedInvite.getGym().getName());
 
     }
 }

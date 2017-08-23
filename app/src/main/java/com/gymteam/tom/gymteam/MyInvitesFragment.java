@@ -11,14 +11,20 @@ import com.gymteam.tom.gymteam.model.Model;
 
 
 public class MyInvitesFragment extends Fragment
-        implements InvitesListFragment.OnWorkoutInviteSelectedListener {
+        implements InvitesListFragment.OnWorkoutInviteSelectedListener,
+        InviteDetailsFragment.InviteDetailsActions{
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false);
+        View v =  inflater.inflate(R.layout.fragment_list, container, false);
+
+
+
+
+        return v;
     }
 
     @Override
@@ -32,9 +38,10 @@ public class MyInvitesFragment extends Fragment
     public void back(){
         Fragment currentFragment = getChildFragmentManager().findFragmentById(R.id.fragment_container);
         if(currentFragment instanceof InvitesListFragment) {
-            GymListFragment gymListFragment = new GymListFragment();
-            getChildFragmentManager().beginTransaction().replace(R.id.fragment_container, gymListFragment).commit();
-        } else if(currentFragment instanceof GymListFragment) { }
+
+        } else if(currentFragment instanceof InviteDetailsFragment) {
+            setList();
+        }
         else {
 
         }
@@ -56,12 +63,26 @@ public class MyInvitesFragment extends Fragment
 
 
     @Override
-    public void onWorkoutInviteSelected(String gymName, int position) {
-
+    public void onWorkoutInviteSelected(String userId, int position) {
+        InviteDetailsFragment inviteDetailsFragment = new InviteDetailsFragment();
+        Bundle args = new Bundle();
+        args.putInt(InviteDetailsFragment.ARG_POSITION, position);
+        args.putString(InviteDetailsFragment.ARG_USER_ID, userId);
+        inviteDetailsFragment.setArguments(args);
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, inviteDetailsFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
     public void addInviteToGym(String name) {
         //Nothing here
+    }
+
+    @Override
+    public void goBackToList() {
+        setList();
     }
 }

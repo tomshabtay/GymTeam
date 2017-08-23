@@ -1,5 +1,7 @@
 package com.gymteam.tom.gymteam.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by tomshabtay on 18/08/2017.
  */
@@ -8,6 +10,7 @@ public class WorkoutInvite {
     public String name;
     public String description;
     public User creator;
+    public ArrayList<User> participators;
     public Gym gym;
 
     public WorkoutInvite(String name, String description, User creator, Gym gym){
@@ -15,6 +18,7 @@ public class WorkoutInvite {
         this.description = description;
         this.creator = creator;
         this.gym = gym;
+        this.participators = new ArrayList<>();
     }
 
     public String getName() {

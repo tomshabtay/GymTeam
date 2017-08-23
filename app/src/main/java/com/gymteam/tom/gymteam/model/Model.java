@@ -39,6 +39,7 @@ public class Model {
         User user = usersList.get(invite.creator.getId());
         user.invites.add(invite);
 
+
         Log.d("INV", activeUser.invites.get(0).getName());
     }
 
@@ -81,4 +82,17 @@ public class Model {
         return instance;
     }
 
+    public void participateUserInInvite(WorkoutInvite selectedInvite) {
+        activeUser.invites.add(selectedInvite);
+        selectedInvite.participators.add(activeUser);
+        for(WorkoutInvite invite : activeUser.invites){
+            Log.d("INV" , invite.getName());
+        }
+
+    }
+
+    public void dontParticipateUserInInvite(WorkoutInvite selectedInvite) {
+        activeUser.invites.remove(selectedInvite);
+        selectedInvite.participators.remove(activeUser);
+    }
 }

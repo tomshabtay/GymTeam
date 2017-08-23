@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                myTabsPagerAdapter.tabMyInvites.setList();
             }
 
             @Override
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity  {
                     myTabsPagerAdapter.tabBrowse.back();
                 }
                 else if(tab_name == TAB_MY_INVITES){
-
+                    myTabsPagerAdapter.tabMyInvites.back();
                 }
 
                 return true;
@@ -112,6 +113,9 @@ public class MainActivity extends AppCompatActivity  {
 
         if(tab_name == TAB_BROWSE) {
             myTabsPagerAdapter.tabBrowse.back();
+        }
+        else if(tab_name == TAB_MY_INVITES){
+            myTabsPagerAdapter.tabMyInvites.back();
         }
 
 

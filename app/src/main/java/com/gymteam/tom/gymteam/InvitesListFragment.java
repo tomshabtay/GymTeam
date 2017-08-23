@@ -30,6 +30,8 @@ public class InvitesListFragment extends ListFragment {
     User selectedUser;
     InviteListAdapter arrayAdapter;
 
+    boolean fromUser;
+
     public InvitesListFragment() {
         // Required empty public constructor
     }
@@ -48,6 +50,7 @@ public class InvitesListFragment extends ListFragment {
             arrayAdapter = new InviteListAdapter(
                     getContext(),
                     selectedGym.workoutInvitesInGym);
+            fromUser = false;
 
 
         } else if(userId != null){
@@ -55,6 +58,7 @@ public class InvitesListFragment extends ListFragment {
             arrayAdapter = new InviteListAdapter(
                     getContext(),
                     selectedUser.invites);
+            fromUser = true;
 
         }
 
@@ -66,6 +70,10 @@ public class InvitesListFragment extends ListFragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_invites_list, container, false);
 
+
+
+
+
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.btn_add_invite);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +81,10 @@ public class InvitesListFragment extends ListFragment {
                 mCallback.addInviteToGym(selectedGym.getName());
             }
         });
+
+        if (fromUser){
+            fab.hide();
+        }
         return view;
     }
 
@@ -90,7 +102,11 @@ public class InvitesListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        mCallback.onWorkoutInviteSelected(selectedGym.getName(), position);
+        if(!fromUser){
+            mCallback.onWorkoutInviteSelected(selectedGym.getName(), position);
+        }else if(fromUser){
+            mCallback.onWorkoutInviteSelected(selectedUser.getId(), position);
+        }
 
 
     }
@@ -127,6 +143,8 @@ public class InvitesListFragment extends ListFragment {
 
             TextView textView4 = (TextView) theView.findViewById(R.id.description_invite);
             textView4.setText(invite.getDescription());
+
+
 
             return theView;
         }
