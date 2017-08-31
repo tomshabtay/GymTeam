@@ -77,7 +77,13 @@ public class InviteDetailsFragment extends Fragment {
 
 
 
-        //Button back_to_list_btn = (Button) view.findViewById(R.id.);
+        Button back_to_list_btn = (Button) view.findViewById(R.id.back_to_list);
+        back_to_list_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.goBackToList();
+            }
+        });
 
 
 

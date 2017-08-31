@@ -19,4 +19,7 @@
     <string name="send">Send</string>
     <string name="participate">Participate</string>
     <string name="back_to_list">Back To List</string>
+    <string name="profile">Profile</string>
+    <string name="profile_name">Enter your name...</string>
+    <string name="profile_edit">Edit Your Profile</string>
 </resources>

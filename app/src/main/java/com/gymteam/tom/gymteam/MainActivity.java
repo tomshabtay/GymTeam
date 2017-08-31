@@ -1,5 +1,6 @@
 package com.gymteam.tom.gymteam;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -9,11 +10,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.gymteam.tom.gymteam.model.Model;
 import com.gymteam.tom.gymteam.model.User;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     public static final String TAB_BROWSE = "Browse";
     public static final String TAB_MY_INVITES = "My Invites";
@@ -41,11 +43,12 @@ public class MainActivity extends AppCompatActivity  {
 
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-         myTabsPagerAdapter = new MyTabsPagerAdapter
+        myTabsPagerAdapter = new MyTabsPagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(myTabsPagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
@@ -64,18 +67,6 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     @Override
@@ -92,18 +83,25 @@ public class MainActivity extends AppCompatActivity  {
         int position = tabLayout.getSelectedTabPosition();
         String tab_name = tabLayout.getTabAt(position).getText().toString();
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
-                if(tab_name == TAB_BROWSE) {
+                if (tab_name == TAB_BROWSE) {
                     myTabsPagerAdapter.tabBrowse.back();
-                }
-                else if(tab_name == TAB_MY_INVITES){
+                } else if (tab_name == TAB_MY_INVITES) {
                     myTabsPagerAdapter.tabMyInvites.back();
                 }
 
                 return true;
+            case R.id.profile_menu_item:
+                showProfileActivity();
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showProfileActivity() {
+        Intent intent = new Intent(this,ProfileActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -111,30 +109,29 @@ public class MainActivity extends AppCompatActivity  {
         int position = tabLayout.getSelectedTabPosition();
         String tab_name = tabLayout.getTabAt(position).getText().toString();
 
-        if(tab_name == TAB_BROWSE) {
+        if (tab_name == TAB_BROWSE) {
             myTabsPagerAdapter.tabBrowse.back();
-        }
-        else if(tab_name == TAB_MY_INVITES){
+        } else if (tab_name == TAB_MY_INVITES) {
             myTabsPagerAdapter.tabMyInvites.back();
         }
 
 
     }
 
-    public void addSampleDataToModel(){
+    public void addSampleDataToModel() {
         Model m = Model.getInstance();
         int i = 0;
-        for (String name : Ipusm.gymNames){
+        for (String name : Ipusm.gymNames) {
             m.addGym(name, Ipusm.gymAddresses[i]);
             i++;
         }
 
-        for (int j = 0; j < Ipusm.userNames.length ; j++){
-            m.addUserToGym(Ipusm.gymNames[j % Ipusm.gymNames.length], Ipusm.userNames[j],Ipusm.userIds[j]);
+        for (int j = 0; j < Ipusm.userNames.length; j++) {
+            m.addUserToGym(Ipusm.gymNames[j % Ipusm.gymNames.length], Ipusm.userNames[j], Ipusm.userIds[j]);
 
         }
 
-        for (int j = 0; j < Ipusm.inviteNames.length ; j++){
+        for (int j = 0; j < Ipusm.inviteNames.length; j++) {
             m.addWorkoutInviteToGym(Ipusm.inviteNames[j],
                     Ipusm.inviteDescriptions[j],
                     Ipusm.userIds[j % Ipusm.userIds.length],
