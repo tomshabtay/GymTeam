@@ -90,7 +90,7 @@ public class Model {
     public void addWorkoutInviteToGym(String name, String description, String userId, String gymName,ArrayList<String> participators) {
         User user = usersList.get(userId);
         Gym gym = gymsList.get(gymName);
-        WorkoutInvite invite = new WorkoutInvite(name, description, user, gym,);
+        WorkoutInvite invite = new WorkoutInvite(name, description, user, gym, participators);
         gym.workoutInvites.add(invite);
 
 
@@ -162,7 +162,7 @@ public class Model {
 
             final ArrayList<WorkoutInvite> invites = new ArrayList<>();
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("gyms").child(gym.getName()).child("invites");
+            DatabaseReference myRef = database.getReference("gyms2").child(gym.getName()).child("invites");
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -170,6 +170,9 @@ public class Model {
                         WorkoutInvite wi = snapshot.getValue(WorkoutInvite.class);
                         wi.setGymOfInvite(gym);
                         wi.setCreatorOfInvite(new User(wi.getCreator(),wi.creator_id));
+
+                        loadParticipators(wi);
+
                         invites.add(wi);
                     }
 
@@ -184,6 +187,38 @@ public class Model {
             });
 
         }
+    }
+
+    public void loadParticipators(final WorkoutInvite invite){
+
+        final ArrayList<String> party = new ArrayList<>();
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("gyms2").child(invite.getGymOfInvite().getName()).child("invites").child(invite.getName()).child("participators");
+        Log.d("part", myRef.toString());
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d("part", snapshot.toString());
+                    String id = snapshot.getValue().toString();
+
+                    Log.d("part", id);
+                    party.add(id);
+
+                }
+
+                invite.setParticipators(party);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
 
@@ -232,6 +267,10 @@ public class Model {
                 myRef.child(name).child("invites").child(wi.getName()).child("creator").setValue(wi.getCreatorOfInvite().getName());
                 myRef.child(name).child("invites").child(wi.getName()).child("creator_id").setValue(wi.getCreatorOfInvite().getId());
                 myRef.child(name).child("invites").child(wi.getName()).child("gym").setValue(wi.getGymOfInvite().getName());
+
+                for (String part : wi.participators){
+                    myRef.child(name).child("invites").child(wi.getName()).child("participators").child(part).setValue(part);
+                }
             }
             // done with gyms
         }

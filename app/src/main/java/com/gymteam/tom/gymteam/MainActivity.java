@@ -19,6 +19,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.gymteam.tom.gymteam.model.Model;
 import com.gymteam.tom.gymteam.model.User;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAB_BROWSE = "Browse";
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //Adding sample data to the Model
-        addSampleDataToModel();
+        //addSampleDataToModel();
         //Model.getInstance().fillDataBase();
 
         Model.getInstance().loadDataBase();
@@ -163,13 +165,32 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        for (int j = 0; j < Ipusm.inviteNames.length; j++) {
-            m.addWorkoutInviteToGym(Ipusm.inviteNames[j],
-                    Ipusm.inviteDescriptions[j],
-                    Ipusm.userIds[j % Ipusm.userIds.length],
-                    Ipusm.gymNames[j % Ipusm.gymNames.length]);
+        ArrayList<String> party = new ArrayList<>();
 
+        for (User user : Model.getInstance().usersList.values()){
+            party.add(user.getId());
         }
+
+        for (int j = 0; j < Ipusm.inviteNames.length; j++) {
+
+            if(j-2 < Ipusm.inviteNames.length) {
+                m.addWorkoutInviteToGym(Ipusm.inviteNames[j],
+                        Ipusm.inviteDescriptions[j],
+                        Ipusm.userIds[j % Ipusm.userIds.length],
+                        Ipusm.gymNames[j % Ipusm.gymNames.length],
+                        new ArrayList<String>(party.subList(j, j + 2)));
+            }
+
+            else  {
+                m.addWorkoutInviteToGym(Ipusm.inviteNames[j],
+                        Ipusm.inviteDescriptions[j],
+                        Ipusm.userIds[j % Ipusm.userIds.length],
+                        Ipusm.gymNames[j % Ipusm.gymNames.length],
+                        new ArrayList<String>(party.subList(j-2, j)));
+            }
+        }
+
+
 
         User user = m.usersList.get(Ipusm.userIds[0]);
         m.setActiveUser(user);

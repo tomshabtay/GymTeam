@@ -14,6 +14,8 @@ import com.gymteam.tom.gymteam.model.Gym;
 import com.gymteam.tom.gymteam.model.Model;
 import com.gymteam.tom.gymteam.model.WorkoutInvite;
 
+import java.util.ArrayList;
+
 
 public class AddInviteFragment extends Fragment {
     public static final String ARG_GYM_NAME = "gym_name";
@@ -61,8 +63,8 @@ public class AddInviteFragment extends Fragment {
         String invite_description = inviteDescriptionEdit.getText().toString();
 
         Gym gym = m.gymsList.get(getArguments().getString(ARG_GYM_NAME));
-
-        WorkoutInvite invite = new WorkoutInvite(invite_name,invite_description,m.activeUser,gym);
+        //TODO
+        WorkoutInvite invite = new WorkoutInvite(invite_name,invite_description,m.activeUser,gym, new ArrayList<String>());
         m.addInvite(invite);
     }
 

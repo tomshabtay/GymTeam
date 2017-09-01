@@ -15,12 +15,12 @@ public class WorkoutInvite {
     public ArrayList<String> participators;
     public Gym gymOfInvite;
 
-    public WorkoutInvite(String name, String description, User creator, Gym gym){
+    public WorkoutInvite(String name, String description, User creator, Gym gym, ArrayList<String> participators){
         this.name = name;
         this.description = description;
         this.creatorOfInvite = creator;
         this.gymOfInvite = gym;
-        this.participators = new ArrayList<>();
+        this.participators = participators;
     }
 
     public WorkoutInvite(){
@@ -81,4 +81,13 @@ public class WorkoutInvite {
         this.creator_id = creator_id;
     }
 
+
+    public ArrayList<String> getParticipators() {
+        return participators;
+    }
+
+
+    public void setParticipators(ArrayList<String> participators) {
+        this.participators = participators;
+    }
 }
