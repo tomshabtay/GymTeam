@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "715236948629",
-    "firebase_url": "https://gymteam-50f1f.firebaseio.com",
-    "project_id": "gymteam-50f1f",
-    "storage_bucket": "gymteam-50f1f.appspot.com"
+    "project_number": "966089642900",
+    "firebase_url": "https://gymteam-265b7.firebaseio.com",
+    "project_id": "gymteam-265b7",
+    "storage_bucket": "gymteam-265b7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:715236948629:android:24db3cb4104e54b6",
+        "mobilesdk_app_id": "1:966089642900:android:24db3cb4104e54b6",
         "android_client_info": {
           "package_name": "com.gymteam.tom.gymteam"
         }
       },
       "oauth_client": [
         {
-          "client_id": "715236948629-ei1lt60epgjkb790t9mdcfmobjq03dhk.apps.googleusercontent.com",
+          "client_id": "966089642900-9d6a99t66at3llmjg669c3geat48g77n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.gymteam.tom.gymteam",
-            "certificate_hash": "e2c7454ccb4943b8a8da9cc7d1f0c4cfc5d3802f"
+            "certificate_hash": "f221d972394991d2cb1c595ebcb2ee1643ce9726"
           }
         },
         {
-          "client_id": "715236948629-93ttu2cdhv8aqc7h4n6t1hru475u82b5.apps.googleusercontent.com",
+          "client_id": "966089642900-8nug039rodko6tii06qog1amrnpffgcf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCnRPged8HWdhHsMFjZOUdQyrMkHDI5JbQ"
+          "current_key": "AIzaSyDP_jKJXdOzFFXZiIeahd-PwlNgwBRtIY0"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "715236948629-93ttu2cdhv8aqc7h4n6t1hru475u82b5.apps.googleusercontent.com",
+              "client_id": "966089642900-8nug039rodko6tii06qog1amrnpffgcf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

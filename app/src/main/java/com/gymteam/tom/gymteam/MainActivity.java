@@ -12,6 +12,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.gymteam.tom.gymteam.model.Model;
 import com.gymteam.tom.gymteam.model.User;
 
@@ -19,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAB_BROWSE = "Browse";
     public static final String TAB_MY_INVITES = "My Invites";
+    private static final String TAG = "MainActivity";
 
     TabLayout tabLayout;
     MyTabsPagerAdapter myTabsPagerAdapter;
@@ -31,6 +38,22 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = db.getReference("mac");
+        myRef.child("test").setValue("ok");
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG,dataSnapshot.toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         //Adding sample data to the Model
         addSampleDataToModel();
