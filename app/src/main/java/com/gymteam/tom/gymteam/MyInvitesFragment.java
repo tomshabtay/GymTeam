@@ -52,7 +52,7 @@ public class MyInvitesFragment extends Fragment
         InvitesListFragment invitesListFragment = new InvitesListFragment();
         Bundle args = new Bundle();
         invitesListFragment.setArguments(args);
-        args.putString(InvitesListFragment.ARG_USER_ID, Model.getInstance().activeUser.getId());
+        args.putString(InvitesListFragment.ARG_USER_ID, Model.getInstance().getActiveUser().getId());
         getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, invitesListFragment)

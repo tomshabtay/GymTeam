@@ -12,13 +12,17 @@ public class Gym {
     private String address;
 
     public HashMap<String,User> usersInGym;
-    public ArrayList<WorkoutInvite> workoutInvitesInGym;
+    public ArrayList<WorkoutInvite> workoutInvites;
 
     public Gym(String name){
         this.name = name;
         this.address = "";
         usersInGym = new HashMap<>();
-        workoutInvitesInGym = new ArrayList<>();
+        workoutInvites = new ArrayList<>();
+    }
+
+    public Gym(){
+
     }
 
     public String getName() {
@@ -38,4 +42,11 @@ public class Gym {
     }
 
 
+    public ArrayList<WorkoutInvite> getWorkoutInvites() {
+        return workoutInvites;
+    }
+
+    public void setWorkoutInvites(ArrayList<WorkoutInvite> workoutInvites) {
+        this.workoutInvites = workoutInvites;
+    }
 }

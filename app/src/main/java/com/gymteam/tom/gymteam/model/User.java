@@ -20,6 +20,9 @@ public class User {
         invites = new ArrayList<WorkoutInvite>();
     }
 
+    public User() {
+
+    }
     public String getName() {
         return name;
     }

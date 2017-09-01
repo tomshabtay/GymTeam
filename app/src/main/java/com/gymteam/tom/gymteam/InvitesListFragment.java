@@ -49,7 +49,7 @@ public class InvitesListFragment extends ListFragment {
             selectedGym = Model.getInstance().gymsList.get(gymName);
             arrayAdapter = new InviteListAdapter(
                     getContext(),
-                    selectedGym.workoutInvitesInGym);
+                    selectedGym.workoutInvites);
             fromUser = false;
 
 
@@ -136,10 +136,10 @@ public class InvitesListFragment extends ListFragment {
             textView.setText(invite.getName());
 
             TextView textView2 = (TextView) theView.findViewById(R.id.gym_name);
-            textView2.setText(invite.getGym().getName());
+            textView2.setText(invite.getGymOfInvite().getName());
 
             TextView textView3 = (TextView) theView.findViewById(R.id.creator_name);
-            textView3.setText(invite.getCreator().getName());
+            textView3.setText(invite.getCreatorOfInvite().getName());
 
             TextView textView4 = (TextView) theView.findViewById(R.id.description_invite);
             textView4.setText(invite.getDescription());

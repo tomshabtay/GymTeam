@@ -10,9 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseDatabase db = FirebaseDatabase.getInstance();
         DatabaseReference myRef = db.getReference("mac");
-        myRef.child("test").setValue("ok");
+        myRef.child("test2").setValue("good");
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -54,9 +57,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
         //Adding sample data to the Model
         addSampleDataToModel();
+        //Model.getInstance().fillDataBase();
+
+        Model.getInstance().loadDataBase();
+
+
 
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -76,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
                 myTabsPagerAdapter.tabMyInvites.setList();
+                myTabsPagerAdapter.tabBrowse.setList();
             }
 
             @Override
@@ -148,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
             m.addGym(name, Ipusm.gymAddresses[i]);
             i++;
         }
+
 
         for (int j = 0; j < Ipusm.userNames.length; j++) {
             m.addUserToGym(Ipusm.gymNames[j % Ipusm.gymNames.length], Ipusm.userNames[j], Ipusm.userIds[j]);

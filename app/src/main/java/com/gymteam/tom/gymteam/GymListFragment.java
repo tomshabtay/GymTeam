@@ -73,7 +73,7 @@ public class GymListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         String name = this.list.get(position).getName();
-        //Getting the name of the gym
+        //Getting the name of the gymOfInvite
         mCallback.onGymSelected(name);
 
     }

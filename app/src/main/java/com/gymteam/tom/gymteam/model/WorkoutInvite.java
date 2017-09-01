@@ -9,16 +9,28 @@ import java.util.ArrayList;
 public class WorkoutInvite {
     public String name;
     public String description;
-    public User creator;
-    public ArrayList<User> participators;
-    public Gym gym;
+    public User creatorOfInvite;
+    public String creator;
+    public String creator_id;
+    public ArrayList<String> participators;
+    public Gym gymOfInvite;
 
     public WorkoutInvite(String name, String description, User creator, Gym gym){
         this.name = name;
         this.description = description;
-        this.creator = creator;
-        this.gym = gym;
+        this.creatorOfInvite = creator;
+        this.gymOfInvite = gym;
         this.participators = new ArrayList<>();
+    }
+
+    public WorkoutInvite(){
+
+    }
+
+    public void addParticipator(String id){
+        if (!participators.contains(id)){
+            participators.add(id);
+        }
     }
 
     public String getName() {
@@ -37,19 +49,36 @@ public class WorkoutInvite {
         this.description = description;
     }
 
-    public User getCreator() {
+    public User getCreatorOfInvite() {
+        return creatorOfInvite;
+    }
+
+    public void setCreatorOfInvite(User creatorOfInvite) {
+        this.creatorOfInvite = creatorOfInvite;
+    }
+
+    public Gym getGymOfInvite() {
+        return gymOfInvite;
+    }
+
+    public void setGymOfInvite(Gym gymOfInvite) {
+        this.gymOfInvite = gymOfInvite;
+    }
+
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(User creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
-    public Gym getGym() {
-        return gym;
+    public String getCreator_id() {
+        return creator_id;
     }
 
-    public void setGym(Gym gym) {
-        this.gym = gym;
+    public void setCreator_id(String creator_id) {
+        this.creator_id = creator_id;
     }
+
 }

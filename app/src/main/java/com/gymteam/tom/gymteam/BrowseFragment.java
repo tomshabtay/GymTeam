@@ -44,6 +44,11 @@ public class BrowseFragment extends Fragment
 
     }
 
+    public void setList(){
+        GymListFragment gymListFragment = new GymListFragment();
+        getChildFragmentManager().beginTransaction().replace(R.id.fragment_container, gymListFragment).commit();
+    }
+
     public void back() {
         Fragment currentFragment = getChildFragmentManager().findFragmentById(R.id.fragment_container);
         if (currentFragment instanceof InvitesListFragment) {
@@ -53,7 +58,7 @@ public class BrowseFragment extends Fragment
 
         } else if (currentFragment instanceof InviteDetailsFragment) {
             InviteDetailsFragment fragment = (InviteDetailsFragment) currentFragment;
-            onGymSelected(fragment.selectedInvite.getGym().getName());
+            onGymSelected(fragment.selectedInvite.getGymOfInvite().getName());
 
         } else {
             GymListFragment gymListFragment = new GymListFragment();
@@ -102,7 +107,7 @@ public class BrowseFragment extends Fragment
     public void goBackToList() {
         Fragment currentFragment = getChildFragmentManager().findFragmentById(R.id.fragment_container);
         InviteDetailsFragment fragment = (InviteDetailsFragment) currentFragment;
-        onGymSelected(fragment.selectedInvite.getGym().getName());
+        onGymSelected(fragment.selectedInvite.getGymOfInvite().getName());
 
     }
 }

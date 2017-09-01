@@ -37,7 +37,7 @@ public class InviteDetailsFragment extends Fragment {
         Bundle args = getArguments();
         Gym gym = Model.getInstance().gymsList.get(args.getString(ARG_GYM_NAME));
         if(gym != null){
-            selectedInvite = gym.workoutInvitesInGym.get(args.getInt(ARG_POSITION));
+            selectedInvite = gym.workoutInvites.get(args.getInt(ARG_POSITION));
         }else {
             User user = Model.getInstance().usersList.get(args.getString(ARG_USER_ID));
             selectedInvite = user.invites.get(args.getInt(ARG_POSITION));
@@ -51,10 +51,10 @@ public class InviteDetailsFragment extends Fragment {
         textView.setText(selectedInvite.getName());
 
         TextView textView2 = (TextView) view.findViewById(R.id.at_gym_details);
-        textView2.setText(selectedInvite.getGym().getName());
+        textView2.setText(selectedInvite.getGymOfInvite().getName());
 
         TextView textView3 = (TextView) view.findViewById(R.id.creator_name);
-        textView3.setText(selectedInvite.getCreator().getName());
+        textView3.setText(selectedInvite.getCreatorOfInvite().getName());
 
         TextView textView4 = (TextView) view.findViewById(R.id.description_invite);
         textView4.setText(selectedInvite.getDescription());
@@ -109,7 +109,7 @@ public class InviteDetailsFragment extends Fragment {
 
     private boolean checkIfUserIsTheCreator(){
         Model m = Model.getInstance();
-        if(m.activeUser.getId().equals(this.selectedInvite.getCreator().getId())){
+        if(m.activeUser.getId().equals(this.selectedInvite.getCreatorOfInvite().getId())){
             return true;
         }
         return false;
