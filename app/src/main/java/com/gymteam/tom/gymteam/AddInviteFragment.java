@@ -63,8 +63,8 @@ public class AddInviteFragment extends Fragment {
         String invite_description = inviteDescriptionEdit.getText().toString();
 
         Gym gym = m.gymsList.get(getArguments().getString(ARG_GYM_NAME));
-        //TODO
-        WorkoutInvite invite = new WorkoutInvite(invite_name,invite_description,m.activeUser,gym, new ArrayList<String>());
+
+        WorkoutInvite invite = new WorkoutInvite(invite_name,invite_description,m.getActiveUser(),gym, new ArrayList<String>());
         m.addInvite(invite);
     }
 

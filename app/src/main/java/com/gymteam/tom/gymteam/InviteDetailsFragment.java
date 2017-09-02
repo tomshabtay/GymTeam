@@ -39,7 +39,8 @@ public class InviteDetailsFragment extends Fragment {
         if(gym != null){
             selectedInvite = gym.workoutInvites.get(args.getInt(ARG_POSITION));
         }else {
-            User user = Model.getInstance().usersList.get(args.getString(ARG_USER_ID));
+            //User user = Model.getInstance().usersList.get(args.getString(ARG_USER_ID));
+            User user = Model.getInstance().getActiveUser();
             selectedInvite = user.invites.get(args.getInt(ARG_POSITION));
         }
 

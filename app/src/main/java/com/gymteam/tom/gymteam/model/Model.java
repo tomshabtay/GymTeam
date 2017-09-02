@@ -32,7 +32,7 @@ public class Model {
             instance = new Model();
             instance.gymsList = new HashMap<>();
             instance.usersList = new HashMap<>();
-            instance.activeUser = new User();
+            instance.activeUser = new User("Beatriz Anastasio", "1346346666");
 
 
         }
@@ -40,12 +40,8 @@ public class Model {
     }
 
     public User getActiveUser() {
-        if (activeUser != null) {
             return activeUser;
-        } else {
-            activeUser = new User("123", "123");
-            return activeUser;
-        }
+
 
     }
 
@@ -61,10 +57,10 @@ public class Model {
         }
     }
 
-    public void addParticipatorToInvite(String gymName, String inviteName, String patcipatorId){
+    public void addParticipatorToInvite(String gymName, String inviteName, String patcipatorId) {
 
-        for (WorkoutInvite invite : gymsList.get(gymName).getWorkoutInvites()){
-            if (invite.name == inviteName){
+        for (WorkoutInvite invite : gymsList.get(gymName).getWorkoutInvites()) {
+            if (invite.name == inviteName) {
                 invite.addParticipator(patcipatorId);
             }
         }
@@ -80,14 +76,27 @@ public class Model {
         Gym gym = gymsList.get(invite.gymOfInvite.getName());
         gym.workoutInvites.add(invite);
 
-        User user = usersList.get(invite.creatorOfInvite.getId());
+        User user = getActiveUser();
         user.invites.add(invite);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("gyms2");
+
+        String gymName = invite.getGymOfInvite().getName();
+        Log.d(TAG, "adding to " + gymName );
+
+        myRef.child(gymName).child("invites").child(invite.getName()).setValue(invite.getName());
+        myRef.child(gymName).child("invites").child(invite.getName()).child("name").setValue(invite.getName());
+        myRef.child(gymName).child("invites").child(invite.getName()).child("description").setValue(invite.getDescription());
+        myRef.child(gymName).child("invites").child(invite.getName()).child("creator").setValue(invite.getCreatorOfInvite().getName());
+        myRef.child(gymName).child("invites").child(invite.getName()).child("creator_id").setValue(invite.getCreatorOfInvite().getId());
+        myRef.child(gymName).child("invites").child(invite.getName()).child("gym").setValue(invite.getGymOfInvite().getName());
 
 
         Log.d("INV", activeUser.invites.get(0).getName());
     }
 
-    public void addWorkoutInviteToGym(String name, String description, String userId, String gymName,ArrayList<String> participators) {
+    public void addWorkoutInviteToGym(String name, String description, String userId, String gymName, ArrayList<String> participators) {
         User user = usersList.get(userId);
         Gym gym = gymsList.get(gymName);
         WorkoutInvite invite = new WorkoutInvite(name, description, user, gym, participators);
@@ -116,7 +125,7 @@ public class Model {
 
     public void dontParticipateUserInInvite(WorkoutInvite selectedInvite) {
         activeUser.invites.remove(selectedInvite);
-        selectedInvite.participators.remove(activeUser.getId());
+        selectedInvite.party.remove(activeUser.getId());
     }
 
     public void setGymsList(HashMap<String, Gym> gyms) {
@@ -127,16 +136,15 @@ public class Model {
     }
 
 
-
     public void loadDataBase() {
 
-        //getUsersFromDatabase();
+        getUsersFromDatabase();
         instance.gymsList = new HashMap<>();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("gyms2");
 
         final HashMap<String, Gym> gymsList = new HashMap<>();
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -163,13 +171,13 @@ public class Model {
             final ArrayList<WorkoutInvite> invites = new ArrayList<>();
             final FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("gyms2").child(gym.getName()).child("invites");
-            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         WorkoutInvite wi = snapshot.getValue(WorkoutInvite.class);
                         wi.setGymOfInvite(gym);
-                        wi.setCreatorOfInvite(new User(wi.getCreator(),wi.creator_id));
+                        wi.setCreatorOfInvite(new User(wi.getCreator(), wi.creator_id));
 
                         loadParticipators(wi);
 
@@ -189,14 +197,14 @@ public class Model {
         }
     }
 
-    public void loadParticipators(final WorkoutInvite invite){
+    public void loadParticipators(final WorkoutInvite invite) {
 
         final ArrayList<String> party = new ArrayList<>();
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("gyms2").child(invite.getGymOfInvite().getName()).child("invites").child(invite.getName()).child("participators");
         Log.d("part", myRef.toString());
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -209,7 +217,7 @@ public class Model {
 
                 }
 
-                invite.setParticipators(party);
+                invite.setParty(party);
             }
 
             @Override
@@ -224,15 +232,15 @@ public class Model {
 
     public void getUsersFromDatabase() {
 
-        final HashMap<String,User> userHashMap = new HashMap<>();
+        final HashMap<String, User> userHashMap = new HashMap<>();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("users");
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     User u = snapshot.getValue(User.class);
-                    userHashMap.put(u.getId(),u);
+                    userHashMap.put(u.getId(), u);
                 }
 
                 setUserMap(userHashMap);
@@ -245,7 +253,7 @@ public class Model {
         });
     }
 
-    private void setUserMap(HashMap<String,User> map) {
+    private void setUserMap(HashMap<String, User> map) {
         instance.usersList = map;
     }
 
@@ -268,7 +276,7 @@ public class Model {
                 myRef.child(name).child("invites").child(wi.getName()).child("creator_id").setValue(wi.getCreatorOfInvite().getId());
                 myRef.child(name).child("invites").child(wi.getName()).child("gym").setValue(wi.getGymOfInvite().getName());
 
-                for (String part : wi.participators){
+                for (String part : wi.party) {
                     myRef.child(name).child("invites").child(wi.getName()).child("participators").child(part).setValue(part);
                 }
             }

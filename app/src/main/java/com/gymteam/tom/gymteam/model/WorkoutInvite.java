@@ -12,7 +12,7 @@ public class WorkoutInvite {
     public User creatorOfInvite;
     public String creator;
     public String creator_id;
-    public ArrayList<String> participators;
+    public ArrayList<String> party;
     public Gym gymOfInvite;
 
     public WorkoutInvite(String name, String description, User creator, Gym gym, ArrayList<String> participators){
@@ -20,7 +20,7 @@ public class WorkoutInvite {
         this.description = description;
         this.creatorOfInvite = creator;
         this.gymOfInvite = gym;
-        this.participators = participators;
+        this.party = participators;
     }
 
     public WorkoutInvite(){
@@ -28,8 +28,8 @@ public class WorkoutInvite {
     }
 
     public void addParticipator(String id){
-        if (!participators.contains(id)){
-            participators.add(id);
+        if (!party.contains(id)){
+            party.add(id);
         }
     }
 
@@ -82,12 +82,12 @@ public class WorkoutInvite {
     }
 
 
-    public ArrayList<String> getParticipators() {
-        return participators;
+    public ArrayList<String> getParty() {
+        return party;
     }
 
 
-    public void setParticipators(ArrayList<String> participators) {
-        this.participators = participators;
+    public void setParty(ArrayList<String> party) {
+        this.party = party;
     }
 }

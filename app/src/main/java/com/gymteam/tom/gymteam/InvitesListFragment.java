@@ -54,7 +54,7 @@ public class InvitesListFragment extends ListFragment {
 
 
         } else if(userId != null){
-            selectedUser = Model.getInstance().usersList.get(userId);
+            selectedUser = Model.getInstance().getActiveUser();
             arrayAdapter = new InviteListAdapter(
                     getContext(),
                     selectedUser.invites);
