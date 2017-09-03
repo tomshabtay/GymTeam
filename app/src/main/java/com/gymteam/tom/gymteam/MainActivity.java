@@ -66,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
         Model.getInstance().loadDataBase();
 
 
-
-
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(TAB_BROWSE));
         tabLayout.addTab(tabLayout.newTab().setText(TAB_MY_INVITES));

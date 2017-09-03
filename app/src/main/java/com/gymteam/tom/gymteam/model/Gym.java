@@ -14,6 +14,14 @@ public class Gym {
     public HashMap<String,User> usersInGym;
     public ArrayList<WorkoutInvite> workoutInvites;
 
+    public HashMap<String, User> getUsersInGym() {
+        return usersInGym;
+    }
+
+    public void setUsersInGym(HashMap<String, User> usersInGym) {
+        this.usersInGym = usersInGym;
+    }
+
     public Gym(String name){
         this.name = name;
         this.address = "";

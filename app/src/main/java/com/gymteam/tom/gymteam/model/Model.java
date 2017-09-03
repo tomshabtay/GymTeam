@@ -169,20 +169,31 @@ public class Model {
         for (final Gym gym : instance.gymsList.values()) {
 
             final ArrayList<WorkoutInvite> invites = new ArrayList<>();
-            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("gyms2").child(gym.getName()).child("invites");
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        WorkoutInvite wi = snapshot.getValue(WorkoutInvite.class);
+//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                        WorkoutInvite wi = snapshot.getValue(WorkoutInvite.class);
+//
+//                        wi.setGymOfInvite(gym);
+//                        wi.setCreatorOfInvite(new User(wi.getCreator(), wi.creator_id));
+//
+//                        loadParticipators(wi);
+//
+//                        invites.add(wi);
+//
+//                    }
+                        final WorkoutInvite wi = dataSnapshot.getValue(WorkoutInvite.class);
+
                         wi.setGymOfInvite(gym);
                         wi.setCreatorOfInvite(new User(wi.getCreator(), wi.creator_id));
 
                         loadParticipators(wi);
 
                         invites.add(wi);
-                    }
+
 
                     gym.setWorkoutInvites(invites);
 
@@ -202,6 +213,14 @@ public class Model {
         final ArrayList<String> party = new ArrayList<>();
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        if(invite == null)
+            return;
+        if(invite.getName() == null)
+            return;
+        if(invite.getGymOfInvite() == null)
+            return;
+
         DatabaseReference myRef = database.getReference("gyms2").child(invite.getGymOfInvite().getName()).child("invites").child(invite.getName()).child("participators");
         Log.d("part", myRef.toString());
         myRef.addValueEventListener(new ValueEventListener() {
