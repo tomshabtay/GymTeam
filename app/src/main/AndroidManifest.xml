@@ -29,9 +29,7 @@
             android:name=".BrowseFragment"
             android:label="@string/title_activity_gym_picker_list" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".EmailAuthActivity">
-
-        </activity>
+        <activity android:name=".EmailAuthActivity"></activity>
         <activity android:name=".Firebase.EmailPasswordActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

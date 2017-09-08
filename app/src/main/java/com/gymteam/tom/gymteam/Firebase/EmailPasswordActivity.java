@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.gymteam.tom.gymteam.MainActivity;
 import com.gymteam.tom.gymteam.R;
+import com.gymteam.tom.gymteam.model.Model;
+import com.gymteam.tom.gymteam.model.User;
 
 public class EmailPasswordActivity extends Activity implements
         View.OnClickListener {
@@ -55,6 +57,8 @@ public class EmailPasswordActivity extends Activity implements
         // [END initialize_auth]
 
         if(mAuth.getCurrentUser() != null){
+            Model m = Model.getInstance();
+            m.setActiveUser(new User(mAuth.getCurrentUser().getDisplayName(),mAuth.getCurrentUser().getEmail()));
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
 

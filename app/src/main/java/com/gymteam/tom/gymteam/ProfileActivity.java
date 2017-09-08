@@ -4,12 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,11 +31,13 @@ public class ProfileActivity extends Activity {
 
     private static final String TAG = "Profile";
     ImageView mImageView;
+    public StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
 
 
 
@@ -43,7 +54,42 @@ public class ProfileActivity extends Activity {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             mImageView.setImageBitmap(myBitmap);
         }
+        loadPicFromFireBase();
 
+
+    }
+
+    private void loadPicFromFireBase() {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        StorageReference storageRef = storage.getReference().child("users").child(auth.getCurrentUser().getUid()).child("image.png");
+
+
+        File localFile = null;
+        try {
+            localFile = File.createTempFile(auth.getCurrentUser().getUid(), "png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        final File finalLocalFile = localFile;
+        storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+                Log.d(TAG,taskSnapshot.toString());
+                if(finalLocalFile.exists())
+                {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(finalLocalFile.getAbsolutePath());
+                    mImageView.setImageBitmap(myBitmap);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
     }
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -78,6 +124,15 @@ public class ProfileActivity extends Activity {
                     "Error creating media file, check storage permissions: ");// e.getMessage());
             return;
         }
+        //save file into firebase
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        FirebaseAuth auth  = FirebaseAuth.getInstance();
+
+        Log.d(TAG, "PATH" + storageRef.getPath().toString());
+        StorageReference childRef = storageRef.child("users").child(auth.getCurrentUser().getUid()).child("image.png");
+        childRef.putFile(Uri.fromFile(pictureFile));
+
         try {
             FileOutputStream fos = new FileOutputStream(pictureFile);
             image.compress(Bitmap.CompressFormat.PNG, 90, fos);

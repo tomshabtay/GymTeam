@@ -32,7 +32,7 @@ public class Model {
             instance = new Model();
             instance.gymsList = new HashMap<>();
             instance.usersList = new HashMap<>();
-            instance.activeUser = new User("Beatriz Anastasio", "1346346666");
+            instance.activeUser = new User("Beatriz Anastasio", "1346346666");//TODO FIX THIS
 
 
         }
@@ -275,6 +275,7 @@ public class Model {
     private void setUserMap(HashMap<String, User> map) {
         instance.usersList = map;
     }
+
 
     public void fillDataBase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
