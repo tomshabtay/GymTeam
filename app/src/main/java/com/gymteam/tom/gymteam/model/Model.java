@@ -3,6 +3,7 @@ package com.gymteam.tom.gymteam.model;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -88,8 +89,8 @@ public class Model {
         myRef.child(gymName).child("invites").child(invite.getName()).setValue(invite.getName());
         myRef.child(gymName).child("invites").child(invite.getName()).child("name").setValue(invite.getName());
         myRef.child(gymName).child("invites").child(invite.getName()).child("description").setValue(invite.getDescription());
-        myRef.child(gymName).child("invites").child(invite.getName()).child("creator").setValue(invite.getCreatorOfInvite().getName());
-        myRef.child(gymName).child("invites").child(invite.getName()).child("creator_id").setValue(invite.getCreatorOfInvite().getId());
+        myRef.child(gymName).child("invites").child(invite.getName()).child("creator").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        myRef.child(gymName).child("invites").child(invite.getName()).child("creator_id").setValue(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         myRef.child(gymName).child("invites").child(invite.getName()).child("gym").setValue(invite.getGymOfInvite().getName());
 
 
@@ -116,16 +117,13 @@ public class Model {
 
     public void participateUserInInvite(WorkoutInvite selectedInvite) {
         activeUser.invites.add(selectedInvite);
-        selectedInvite.addParticipator(activeUser.getId());
-        for (WorkoutInvite invite : activeUser.invites) {
-            Log.d("INV", invite.getName());
-        }
+
 
     }
 
     public void dontParticipateUserInInvite(WorkoutInvite selectedInvite) {
         activeUser.invites.remove(selectedInvite);
-        selectedInvite.party.remove(activeUser.getId());
+
     }
 
     public void setGymsList(HashMap<String, Gym> gyms) {
@@ -148,9 +146,11 @@ public class Model {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Gym g = snapshot.getValue(Gym.class);
-                    gymsList.put(g.getName(), g);
-                    loadInvites(g);
+                    if(snapshot.getValue().toString().contains("{")) {
+                        Gym g = snapshot.getValue(Gym.class);
+                        gymsList.put(g.getName(), g);
+                        loadInvites(g);
+                    }
                 }
 
                 setGymsList(gymsList);

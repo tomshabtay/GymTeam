@@ -137,22 +137,8 @@ public class ProfileActivity extends Activity {
 
     public void createUser()
     {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-
-        String email = auth.getCurrentUser().getEmail();
-        User user = new User("tomtom hivertshabtay",email);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("users");
-
-        String userName = user.getName();
-        Log.d(TAG, "adding to " + userName );
-
-        myRef.child(userName).child("age").child("" + user.getAge());
-        myRef.child(userName).child("id").child(auth.getCurrentUser().getUid());
-        myRef.child(userName).child("name").child(user.getName());
-
-        Log.d("USER", user.getName());
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
 
     }
 
