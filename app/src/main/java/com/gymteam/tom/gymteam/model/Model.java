@@ -150,10 +150,11 @@ public class Model {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Gym g = snapshot.getValue(Gym.class);
                     gymsList.put(g.getName(), g);
+                    loadInvites(g);
                 }
 
                 setGymsList(gymsList);
-                loadInvites();
+
             }
 
             @Override
@@ -165,37 +166,32 @@ public class Model {
 
     }
 
-    public void loadInvites() {
-        for (final Gym gym : instance.gymsList.values()) {
+    public void loadInvites(Gym g) {
+        final Gym gymF = g;
 
             final ArrayList<WorkoutInvite> invites = new ArrayList<>();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("gyms2").child(gym.getName()).child("invites");
+            DatabaseReference myRef = database.getReference("gyms2").child(g.getName()).child("invites");
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                        WorkoutInvite wi = snapshot.getValue(WorkoutInvite.class);
-//
-//                        wi.setGymOfInvite(gym);
-//                        wi.setCreatorOfInvite(new User(wi.getCreator(), wi.creator_id));
-//
-//                        loadParticipators(wi);
-//
-//                        invites.add(wi);
-//
-//                    }
-                        final WorkoutInvite wi = dataSnapshot.getValue(WorkoutInvite.class);
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if(snapshot.getValue().toString().contains("{")) {
+                            WorkoutInvite wi = snapshot.getValue(WorkoutInvite.class);
 
-                        wi.setGymOfInvite(gym);
-                        wi.setCreatorOfInvite(new User(wi.getCreator(), wi.creator_id));
+                            wi.setGymOfInvite(gymF);
+                            wi.setCreatorOfInvite(new User(wi.getCreator(), wi.creator_id));
 
-                        loadParticipators(wi);
+                            //loadParticipators(wi);
 
-                        invites.add(wi);
+                            invites.add(wi);
+                        }
+
+                    }
 
 
-                    gym.setWorkoutInvites(invites);
+
+                    gymF.setWorkoutInvites(invites);
 
                 }
 
@@ -205,7 +201,7 @@ public class Model {
                 }
             });
 
-        }
+
     }
 
     public void loadParticipators(final WorkoutInvite invite) {
