@@ -11,14 +11,19 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.gymteam.tom.gymteam.model.Gym;
+import com.gymteam.tom.gymteam.model.User;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,6 +46,17 @@ public class ProfileActivity extends Activity {
 
 
 
+
+        Button button = (Button) findViewById(R.id.finish_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createUser();
+            }
+        });
+
+
+
         mImageView = (ImageView) findViewById(R.id.imageView2);
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +71,8 @@ public class ProfileActivity extends Activity {
             mImageView.setImageBitmap(myBitmap);
         }
         loadPicFromFireBase();
+
+
 
 
     }
@@ -117,6 +135,29 @@ public class ProfileActivity extends Activity {
 
     }
 
+    public void createUser()
+    {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+
+        String email = auth.getCurrentUser().getEmail();
+        User user = new User("tomtom hivertshabtay",email);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users");
+
+        String userName = user.getName();
+        Log.d(TAG, "adding to " + userName );
+
+        myRef.child(userName).child("age").child("" + user.getAge());
+        myRef.child(userName).child("id").child(auth.getCurrentUser().getUid());
+        myRef.child(userName).child("name").child(user.getName());
+
+        Log.d("USER", user.getName());
+
+    }
+
+
+
     private void storeImage(Bitmap image) {
         File pictureFile = getOutputMediaFile();
         if (pictureFile == null) {
@@ -132,6 +173,7 @@ public class ProfileActivity extends Activity {
         Log.d(TAG, "PATH" + storageRef.getPath().toString());
         StorageReference childRef = storageRef.child("users").child(auth.getCurrentUser().getUid()).child("image.png");
         childRef.putFile(Uri.fromFile(pictureFile));
+        //END save file into firebase
 
         try {
             FileOutputStream fos = new FileOutputStream(pictureFile);

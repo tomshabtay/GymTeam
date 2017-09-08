@@ -16,6 +16,10 @@
         android:title="@string/profile"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/signoutButton"
+        android:title="Sign out"
+        app:showAsAction="never"/>
+
 
 
 </menu>

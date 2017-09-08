@@ -17,6 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.gymteam.tom.gymteam.MainActivity;
+import com.gymteam.tom.gymteam.ProfileActivity;
 import com.gymteam.tom.gymteam.R;
 import com.gymteam.tom.gymteam.model.Model;
 import com.gymteam.tom.gymteam.model.User;
@@ -39,6 +40,10 @@ public class EmailPasswordActivity extends Activity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_password);
+
+
+
+
 
         // Views
         mStatusTextView = (TextView) findViewById(R.id.status);
@@ -93,6 +98,15 @@ public class EmailPasswordActivity extends Activity implements
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("id",user.getEmail());
+                            Intent intent = new Intent(EmailPasswordActivity.this, ProfileActivity.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
