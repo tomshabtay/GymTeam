@@ -38,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-
-
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d(TAG,dataSnapshot.toString());
+                Log.d(TAG, dataSnapshot.toString());
             }
 
             @Override
@@ -69,8 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText(TAB_BROWSE));
         tabLayout.addTab(tabLayout.newTab().setText(TAB_MY_INVITES));
+        tabLayout.addTab(tabLayout.newTab().setText(TAB_BROWSE));
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 

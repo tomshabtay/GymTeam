@@ -44,9 +44,6 @@ public class ProfileActivity extends Activity {
         setContentView(R.layout.activity_profile);
 
 
-
-
-
         Button button = (Button) findViewById(R.id.finish_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

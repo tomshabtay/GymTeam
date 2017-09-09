@@ -19,11 +19,15 @@ public class MyTabsPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                tabBrowse = new BrowseFragment();
-                return tabBrowse;
-            case 1:
+
                 tabMyInvites = new MyInvitesFragment();
                 return tabMyInvites;
+
+            case 1:
+
+                tabBrowse = new BrowseFragment();
+                return tabBrowse;
+
 
             default:
                 return null;
